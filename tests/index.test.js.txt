@@ -1,0 +1,7 @@
+const Wallet = require('../src/index');
+
+const wallet = new Wallet();
+
+wallet.addMoney(100);         // Test adding money
+wallet.withdrawMoney(50);     // Test withdrawing money
+wallet.getBalance();          // Test fetching balance

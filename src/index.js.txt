@@ -1,0 +1,43 @@
+const fs = require('fs');
+
+class Wallet {
+    constructor() {
+        this.balance = 0;
+        this.logFile = 'wallet.log';
+    }
+
+    logTransaction(message) {
+        fs.appendFileSync(this.logFile, `${new Date().toISOString()} - ${message}\n`);
+    }
+
+    addMoney(amount) {
+        if (amount > 0) {
+            this.balance += amount;
+            const message = `Added ${amount}. New balance: ${this.balance}`;
+            console.log(message);
+            this.logTransaction(message);
+        } else {
+            console.log("Invalid amount");
+        }
+    }
+
+    withdrawMoney(amount) {
+        if (amount > 0 && this.balance >= amount) {
+            this.balance -= amount;
+            const message = `Withdrew ${amount}. New balance: ${this.balance}`;
+            console.log(message);
+            this.logTransaction(message);
+        } else {
+            console.log("Insufficient balance or invalid amount");
+        }
+    }
+
+    getBalance() {
+        const message = `Current balance: ${this.balance}`;
+        console.log(message);
+        this.logTransaction(message);
+        return this.balance;
+    }
+}
+
+module.exports = Wallet;
