@@ -1,0 +1,51 @@
+const Wallet = require("../models/walletModel");
+
+exports.createWallet = (req, res) => {
+  const { userId } = req.body;
+  try {
+    const existingWallet = Wallet.findByUserId(userId);
+    if (existingWallet) {
+      return res.status(400).json({ message: "Wallet already exists" });
+    }
+    const newWallet = Wallet.createWallet(userId);
+    res.status(201).json({ message: "Wallet created successfully", wallet: newWallet });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.addMoney = (req, res) => {
+  const { userId, amount } = req.body;
+  try {
+    const updatedWallet = Wallet.updateBalance(userId, amount);
+    res.status(200).json({ message: "Money added successfully", wallet: updatedWallet });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+exports.withdrawMoney = (req, res) => {
+  const { userId, amount } = req.body;
+  try {
+    const wallet = Wallet.findByUserId(userId);
+    if (!wallet) throw new Error("Wallet not found");
+    if (wallet.balance < amount) {
+      return res.status(400).json({ message: "Insufficient balance" });
+    }
+    wallet.balance -= amount;
+    res.status(200).json({ message: "Money withdrawn successfully", wallet });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getWalletDetails = (req, res) => {
+  const { userId } = req.params;
+  try {
+    const wallet = Wallet.findByUserId(userId);
+    if (!wallet) throw new Error("Wallet not found");
+    res.status(200).json(wallet);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};

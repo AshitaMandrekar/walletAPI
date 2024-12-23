@@ -1,0 +1,27 @@
+const wallets = []; // In-memory data storage for simplicity
+
+class Wallet {
+  constructor(userId, balance = 0) {
+    this.userId = userId;
+    this.balance = balance;
+  }
+
+  static findByUserId(userId) {
+    return wallets.find(wallet => wallet.userId === userId);
+  }
+
+  static createWallet(userId) {
+    const wallet = new Wallet(userId);
+    wallets.push(wallet);
+    return wallet;
+  }
+
+  static updateBalance(userId, amount) {
+    const wallet = Wallet.findByUserId(userId);
+    if (!wallet) throw new Error("Wallet not found");
+    wallet.balance += amount;
+    return wallet;
+  }
+}
+
+module.exports = Wallet;

@@ -1,0 +1,11 @@
+const express = require("express");
+const app = express();
+const walletRoutes = require("./routes/wallet");
+
+app.use(express.json()); // Middleware to parse JSON request body
+app.use("/wallet", walletRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
