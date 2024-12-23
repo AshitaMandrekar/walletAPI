@@ -1,0 +1,7 @@
+// interface.js
+module.exports = {
+  getWallet: function() {},
+  createWallet: function() {},
+  addMoney: function() {},
+  withdrawMoney: function() {},
+};
